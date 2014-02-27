@@ -20,23 +20,26 @@ class Specimen(models.Model):
 	name = models.CharField(max_length=64)
 	def __str__(self):
 		return self.name
+# ------------------------------------------------------
+
+class Antibiotic(models.Model):
+	name 	  = models.CharField(max_length=255)
 
 # ------------------------------------------------------
 
 class Record(models.Model):
-	bactery   = models.ForeignKey(Bactery)
-	service   = models.ForeignKey(Service)
-	specimen  = models.ForeignKey(Specimen)
-	date      = models.DateField()
- 	patient   = models.CharField(max_length=10)
-	birthday  = models.DateField()
+	bactery    = models.ForeignKey(Bactery)
+	service    = models.ForeignKey(Service)
+	specimen   = models.ForeignKey(Specimen)
+	date       = models.DateField()
+ 	patient    = models.CharField(max_length=10)
+	birthday   = models.DateField()
+	sensibility= models.ManyToManyField(Antibiotic, through='Resistance')
+
 
 # ------------------------------------------------------
 
-class Atb(models.Model):
-	record    = models.ForeignKey(Record)
-	name 	  = models.CharField(max_length=255)
-	value 	  = models.CharField(max_length=2)
-
-# ------------------------------------------------------
-
+class Resistance(models.Model):
+	record     = models.ForeignKey(Record)
+	antibiotic = models.ForeignKey(Antibiotic)
+	value      = models.CharField(max_length=3) 
