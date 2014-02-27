@@ -11,6 +11,11 @@ def inject_datas(filename):
 	file = open(filename,'rb')
 	csvreader = csv.reader(file,delimiter=";")
 	headers = csvreader.next()
+
+	# for name in headers[7:]:
+	# 	Antibiotic.objects.get_or_create(name = name)
+
+
 	for row in csvreader:
 
 		recId    = row[0]
@@ -33,25 +38,28 @@ def inject_datas(filename):
 		bacterie_item = Bactery.objects.get_or_create(generic_name=g_name,specfic_name=s_name)
 
 
-		# item  = Record.objects.get_or_create(  
-		# 								service  = service_item[0], 
-		# 								bactery  = bacterie_item[0],
-		# 								specimen = specimen_item[0],
-		# 								date     = date,
-		# 								birthday = birthday,
-		# 								id       = recId)
+		record  = Record.objects.get_or_create(  
+										service  = service_item[0], 
+										bactery  = bacterie_item[0],
+										specimen = specimen_item[0],
+										date     = date,
+										birthday = birthday,
+										id       = recId)
 
+
+		for name in headers[7:]:
+			index = headers.index(name)
+			if bool(row[index])  and row[index] not in "NL":
+				atb_item = Antibiotic.objects.get_or_create(name = name)
+				Resistance.objects.create(record = record[0], 
+										  antibiotic = atb_item[0],
+										  value = row[index])
+				
+		
+		print("Save Record %s" % recId)		
 		
 
-		for atbname in headers[7:]:
-
-
-
-
-
-
-		print "saved " + recId
-		break
+		# break
 	
 		
 
