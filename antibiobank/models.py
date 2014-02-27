@@ -36,7 +36,7 @@ class Record(models.Model):
 class Atb(models.Model):
 	record    = models.ForeignKey(Record)
 	name 	  = models.CharField(max_length=255)
-	value 	  = models.CharField(max_length=1)
+	value 	  = models.CharField(max_length=2)
 
 # ------------------------------------------------------
 
