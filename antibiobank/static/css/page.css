@@ -1,0 +1,54 @@
+*{
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.container {
+	position:absolute;
+	bottom:0px;
+	top:45px;
+	width: 100%;
+}
+
+.left {
+	background-color: #FBFBFB;
+	position: absolute;
+	width: 300px;
+	bottom: 0px;
+	top:0px;
+	border-right: 1px solid #EEEEEE;
+	padding: 5px;
+	overflow-y: auto;
+	overflow-x: hidden;
+
+}
+
+.main {
+	margin-left: 300px;
+	position: absolute;
+	right: 0px;
+	left:0px;
+	padding-left: 30px;
+
+
+}
+
+.uk-form fieldset {
+	text-align: center;
+}
+.uk-form .field {
+	width: 280px;
+	margin: 5px;
+	display: block;
+
+}
+
+.uk-badge{
+	background-color: green;
+
+}
+
+.uk-panel-box {
+	text-align: center
+}

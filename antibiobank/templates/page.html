@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Test</title>
+	<link rel="stylesheet" href="static/css/uikit.gradient.min.css">
+	<link rel="stylesheet" href="static/css/page.css">
+	<script src="static/js/jquery.min.js"></script>
+	<script src="static/js/uikit.min.js"></script>
+	<script src="static/js/chart.min.js"></script>
+
+</head>
+<body>
+
+	<nav class="uk-navbar">
+		<a class="uk-navbar-brand" href="">AntiBiobank</a>
+
+		<ul class="uk-navbar-nav">
+			<li><a href="#">A propos</a></li>
+			<li><a href="#">Aide</a></li>
+			<li><a href="#">Participer</a></li>
+		</ul>
+
+		<div class="uk-navbar-flip">
+			<div class="navbar-content uk-hidden-small">
+
+				<form class="uk-search">
+					<input class="uk-search-field bactery_search" type="search" placeholder="Bactérie ..." autocomplete="off">
+					<button class="uk-search-close" type="reset"></button>
+				</form>
+			</div>
+		</div>
+	</nav>
+
+
+
+	<div class="container">
+
+		<div class="left">
+
+			<form action="#" class="uk-form">
+				<legend>Filtre </legend>
+
+
+				<fieldset class="fieldset">
+					<input class="uk-form-large field" type="text" placeholder="Bacterie">
+					<input class="uk-form-large field" type="text" placeholder="Prelevement">
+					<input class="uk-form-large field" type="text" placeholder="Service">
+
+
+				</fieldset>
+				<button class="uk-button  uk-width-1-1">Rechercher</button>
+
+			</form>
+
+			<hr>
+
+			<ul class="uk-nav uk-nav-side">
+				<li><a href="">Amoxicilline</a></li>
+				<li class="uk-active"><a href="">Cefotaxime</a></li>
+
+
+			</ul>
+			
+
+
+		</div>
+
+
+		<div class="main">
+			<div class="uk-grid " id="box_container">
+				<div class="uk-width-1-4 uk-grid-margin" id="box_template">
+					<div class="uk-panel uk-panel-box" >
+						<h3 class="uk-panel-title">
+							Amoxicilline
+						</h3>
+						<canvas id="chart" width="200" height="200"></canvas>
+					</div>
+				</div>
+
+
+			</div>
+
+		</div>
+
+
+
+
+
+
+			</div>
+
+			<script>
+
+			$(document).ready(function(){
+
+
+
+				box_template = $(".uk-width-1-4")[0].outerHTML
+
+				$("#box_container").empty()
+
+				$("#box_container").append(box_template)
+				$("#box_container").append(box_template)
+				$("#box_container").append(box_template)
+				$("#box_container").append(box_template)
+
+				$("#box_container").append(box_template)
+				$("#box_container").append(box_template)
+
+			
+			
+
+
+				data = {"hopital":"CHU BREST","years":"2013","bacterie":"Staphylococcus aureus","list":[{"name":"KANAMYCINE","R":"29","S":"54","I":"2","TOTAL":"85"},{"name":"TOBRAMYCINE","R":"30","S":"55","I":"0","TOTAL":"85"},{"name":"GENTAMICINE","R":"1","S":"84","I":"0","TOTAL":"85"},{"name":"DOXYCYCLINE","R":"0","S":"0","I":"0","TOTAL":"0"},{"name":"ERYTHROMYCINE","R":"28","S":"56","I":"1","TOTAL":"85"},{"name":"OXACILLINE","R":"85","S":"0","I":"0","TOTAL":"85"},{"name":"PRISTINAMYCINE","R":"0","S":"85","I":"0","TOTAL":"85"},{"name":"NEOMYCINE","R":"0","S":"0","I":"0","TOTAL":"0"},{"name":"PEFLOXACINE","R":"0","S":"0","I":"0","TOTAL":"0"},{"name":"FOSFOMYCINE","R":"0","S":"85","I":"0","TOTAL":"85"},{"name":"TRIMETHOPRIME-SULFAMIDES","R":"0","S":"85","I":"0","TOTAL":"85"},{"name":"RIFAMPICINE","R":"1","S":"83","I":"1","TOTAL":"85"},{"name":"TEICOPLANINE","R":"0","S":"85","I":"0","TOTAL":"85"},{"name":"VANCOMYCINE","R":"0","S":"85","I":"0","TOTAL":"85"},{"name":"ACIDE-SIDIQUE","R":"6","S":"79","I":"0","TOTAL":"85"},{"name":"MUPIROCINE","R":"0","S":"84","I":"0","TOTAL":"84"},{"name":"AMOXICILLINE-AC-AVULANIQUE","R":"0","S":"0","I":"0","TOTAL":"0"},{"name":"CEFOXITINE","R":"2","S":"0","I":"0","TOTAL":"2"},{"name":"LINEZOLIDE","R":"0","S":"85","I":"0","TOTAL":"85"},{"name":"LATAMOXEF","R":"0","S":"0","I":"0","TOTAL":"0"}]}
+
+
+
+				var ctx = document.getElementById("chart").getContext("2d");
+
+				var pieData = []
+
+				pieData.push({"value":parseInt(data.list[0].S),color:"#98cb4a"})
+				pieData.push({"value":parseInt(data.list[0].I), color:"#849199"})
+				pieData.push({"value":parseInt(data.list[0].R), color:"#f26075"})
+
+				var myPie = new Chart(ctx).Doughnut(pieData);
+
+
+
+
+
+
+
+			})
+
+</script>
+
+</body>
+
+
+
+
+
+
+</html>

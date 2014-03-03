@@ -8,12 +8,18 @@ from antibiobank.models import *
 
 
 def inject_datas(filename):
-	file = open(filename,'rb')
+	file    = open(filename,'rb')
+	total   = len(file.readlines())
+	current = 0.0
+
+
+	file.seek(0)
 	csvreader = csv.reader(file,delimiter=";")
 	headers = csvreader.next()
 
 	# for name in headers[7:]:
 	# 	Antibiotic.objects.get_or_create(name = name)
+
 
 
 	for row in csvreader:
@@ -56,8 +62,8 @@ def inject_datas(filename):
 										  value = row[index])
 				
 		
-		print("Save Record %s" % recId)		
-		
+		print("[%s %%] ave Record %s" % (round(current/total*100,2),recId))		
+		current += 1	
 
 		# break
 	
