@@ -3,10 +3,10 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Test</title>
-	<link rel="stylesheet" href="static/css/uikit.gradient.min.css">
+	<link rel="stylesheet" href="static/uikit/css/uikit.gradient.min.css">
 	<link rel="stylesheet" href="static/css/page.css">
 	<script src="static/js/jquery.min.js"></script>
-	<script src="static/js/uikit.min.js"></script>
+	<script src="static/uikit/js/uikit.min.js"></script>
 	<script src="static/js/chart.min.js"></script>
 
 </head>
@@ -39,28 +39,40 @@
 		<div class="left">
 
 			<form action="#" class="uk-form">
-				<legend>Filtre </legend>
+				<input id="bacteries_input" class="uk-form-large field" type="text" placeholder="Bacterie" 
+				list="bacteries_list">
+
+				<input id="specimens_input" class="uk-form-large field" type="text" placeholder="Prelevement" 
+				list="specimens_list">
+
+				<input id="services_input" class="uk-form-large field" type="text" placeholder="Service" 
+				list="services_list">
 
 
-				<fieldset class="fieldset">
-					<input class="uk-form-large field" type="text" placeholder="Bacterie">
-					<input class="uk-form-large field" type="text" placeholder="Prelevement">
-					<input class="uk-form-large field" type="text" placeholder="Service">
+				<datalist id="bacteries_list">
+				</datalist>
+				
+				<datalist id="specimens_list">
+				</datalist>
+
+				<datalist id="services_list">
+				</datalist>
 
 
-				</fieldset>
-				<button class="uk-button  uk-width-1-1">Rechercher</button>
+				<button class="uk-button  uk-width-1-1" onClick="get_stats()">Rechercher</button>
+
 
 			</form>
 
 			<hr>
 
-			<ul class="uk-nav uk-nav-side">
+			<ul class="uk-nav uk-nav-side" id="atb_list">
 				<li><a href="">Amoxicilline</a></li>
 				<li class="uk-active"><a href="">Cefotaxime</a></li>
 
 
 			</ul>
+
 			
 
 
@@ -68,13 +80,13 @@
 
 
 		<div class="main">
-			<div class="uk-grid " id="box_container">
-				<div class="uk-width-1-4 uk-grid-margin" id="box_template">
+			<div class="uk-grid" id="box_container">
+				<div class="uk-width-custom uk-grid-margin" style="width:300px;visibility:hidden" id="box_template">
 					<div class="uk-panel uk-panel-box" >
 						<h3 class="uk-panel-title">
-							Amoxicilline
+							{ANTIBIOTIQUE}
 						</h3>
-						<canvas id="chart" width="200" height="200"></canvas>
+						<canvas id="{CHART}" width="200" height="200"></canvas>
 					</div>
 				</div>
 
@@ -88,51 +100,112 @@
 
 
 
-			</div>
+	</div>
 
-			<script>
+	<script>
 
-			$(document).ready(function(){
+// ====================================================================
 
+function get_stats(){
 
-
-				box_template = $(".uk-width-1-4")[0].outerHTML
-
-				$("#box_container").empty()
-
-				$("#box_container").append(box_template)
-				$("#box_container").append(box_template)
-				$("#box_container").append(box_template)
-				$("#box_container").append(box_template)
-
-				$("#box_container").append(box_template)
-				$("#box_container").append(box_template)
-
-			
-			
+	send = {}
+	send["bacterie"] = $("#bacteries_input").val();
+	send["specimen"] = $("#specimens_input").val();
+	send["service"]  = $("#services_input").val();
 
 
-				data = {"hopital":"CHU BREST","years":"2013","bacterie":"Staphylococcus aureus","list":[{"name":"KANAMYCINE","R":"29","S":"54","I":"2","TOTAL":"85"},{"name":"TOBRAMYCINE","R":"30","S":"55","I":"0","TOTAL":"85"},{"name":"GENTAMICINE","R":"1","S":"84","I":"0","TOTAL":"85"},{"name":"DOXYCYCLINE","R":"0","S":"0","I":"0","TOTAL":"0"},{"name":"ERYTHROMYCINE","R":"28","S":"56","I":"1","TOTAL":"85"},{"name":"OXACILLINE","R":"85","S":"0","I":"0","TOTAL":"85"},{"name":"PRISTINAMYCINE","R":"0","S":"85","I":"0","TOTAL":"85"},{"name":"NEOMYCINE","R":"0","S":"0","I":"0","TOTAL":"0"},{"name":"PEFLOXACINE","R":"0","S":"0","I":"0","TOTAL":"0"},{"name":"FOSFOMYCINE","R":"0","S":"85","I":"0","TOTAL":"85"},{"name":"TRIMETHOPRIME-SULFAMIDES","R":"0","S":"85","I":"0","TOTAL":"85"},{"name":"RIFAMPICINE","R":"1","S":"83","I":"1","TOTAL":"85"},{"name":"TEICOPLANINE","R":"0","S":"85","I":"0","TOTAL":"85"},{"name":"VANCOMYCINE","R":"0","S":"85","I":"0","TOTAL":"85"},{"name":"ACIDE-SIDIQUE","R":"6","S":"79","I":"0","TOTAL":"85"},{"name":"MUPIROCINE","R":"0","S":"84","I":"0","TOTAL":"84"},{"name":"AMOXICILLINE-AC-AVULANIQUE","R":"0","S":"0","I":"0","TOTAL":"0"},{"name":"CEFOXITINE","R":"2","S":"0","I":"0","TOTAL":"2"},{"name":"LINEZOLIDE","R":"0","S":"85","I":"0","TOTAL":"85"},{"name":"LATAMOXEF","R":"0","S":"0","I":"0","TOTAL":"0"}]}
+	$.post("ajax_stats.json",send, function(data,status){
+		alert(status);
+		$("#atb_list").empty();
+		for (var i=0; i<data.length; i++)
+			$("#atb_list").append("<li><a href='#'>"+data[i].name+"</a></li>")
 
+		load_chart(data);
 
+		
 
-				var ctx = document.getElementById("chart").getContext("2d");
+	});
+}
 
-				var pieData = []
+// ====================================================================
 
-				pieData.push({"value":parseInt(data.list[0].S),color:"#98cb4a"})
-				pieData.push({"value":parseInt(data.list[0].I), color:"#849199"})
-				pieData.push({"value":parseInt(data.list[0].R), color:"#f26075"})
+function load_chart(data){
 
-				var myPie = new Chart(ctx).Doughnut(pieData);
+	box_template = $("#box_template")[0].outerHTML;
+
+	$("#box_container").empty();
 
 
 
+	for (var i=0; i<data.length; i+=1)
+	{
+		console.log(data[i]);
+		box = box_template.replace("visibility:hidden", "");
+		box = box.replace("{ANTIBIOTIQUE}", data[i].name);
+		box = box.replace("{CHART}", "chart"+i);
+		box = box.replace("box_template", "box"+i);
+		$("#box_container").append(box);
+
+		var ctx = document.getElementById("chart"+i).getContext("2d");
+
+		var pieData = []
+
+		pieData.push({"value":parseInt(data[i].S),color:"#98cb4a"})
+		pieData.push({"value":parseInt(data[i].I), color:"#849199"})
+		pieData.push({"value":parseInt(data[i].R), color:"#f26075"})
+
+		var myPie = new Chart(ctx).Doughnut(pieData);
+
+
+
+	}
 
 
 
 
-			})
+}
+
+
+
+
+$(document).ready(function(){
+
+
+	$("#bacteries_list").empty();
+	$("#services_list").empty();
+	$("#specimens_list").empty();
+
+	$.getJSON("http://localhost:8000/ajax_bacteries.json", function(data) {
+		for (var i=0; i<data.results.length; i+=1)
+			$("#bacteries_list").append("<option value='"+data.results[i]+"'>")
+	});
+
+	$.getJSON("http://localhost:8000/ajax_services.json", function(data) {
+		for (var i=0; i<data.results.length; i+=1)
+			$("#services_list").append("<option value='"+data.results[i]+"'>")
+	});
+
+	$.getJSON("http://localhost:8000/ajax_specimens.json", function(data) {
+		for (var i=0; i<data.results.length; i+=1)
+			$("#specimens_list").append("<option value='"+data.results[i]+"'>")
+	});
+
+
+
+	
+
+
+
+
+
+	
+
+
+
+
+
+
+})
 
 </script>
 

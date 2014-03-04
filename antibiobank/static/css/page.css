@@ -9,6 +9,7 @@
 	bottom:0px;
 	top:45px;
 	width: 100%;
+
 }
 
 .left {
@@ -30,14 +31,15 @@
 	right: 0px;
 	left:0px;
 	padding-left: 30px;
+	padding-right: 30px;
 
 
 }
 
-.uk-form fieldset {
+.uk-search fieldset {
 	text-align: center;
 }
-.uk-form .field {
+input{
 	width: 280px;
 	margin: 5px;
 	display: block;
@@ -50,5 +52,12 @@
 }
 
 .uk-panel-box {
-	text-align: center
+	text-align: center;
+	height: 300px;
 }
+
+#box_container{
+margin:auto;
+
+}
+
