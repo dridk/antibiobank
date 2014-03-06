@@ -10,8 +10,7 @@ def index(request):
 	return render(request, "page.html", context)
 
 def ajax_bacteries(request):
-	response_data = []
-	for b in Bactery.objects.all():
+	response_data = []	for b in Bactery.objects.all():
 		response_data.append(unicode(b))
 	return HttpResponse(json.dumps({"results":response_data}), content_type="application/json")
 
@@ -35,6 +34,8 @@ def ajax_stats(request):
 		if request.method == "POST":
 			print "post params : "+ str(request.POST)
 
+		print "type of "
+
 		atb = []
 		resistances = Resistance.objects.filter(record__bactery_id=1)
 		
@@ -45,11 +46,12 @@ def ajax_stats(request):
 
 			obj = {}
 			obj["name"] = item[0]
-			obj["S"] = resistances.filter(value="S", antibiotic__name = item[0]).count()
-			obj["R"] = resistances.filter(value="R", antibiotic__name = item[0]).count()
-			obj["I"] = resistances.filter(value="I", antibiotic__name = item[0]).count()
+			obj["S"] = int(resistances.filter(value="S", antibiotic__name = item[0]).count())
+			obj["R"] = int(resistances.filter(value="R", antibiotic__name = item[0]).count())
+			obj["I"] = int(resistances.filter(value="I", antibiotic__name = item[0]).count())
 
 			atb.append(obj)
+
 
 
 		return HttpResponse(json.dumps(atb), content_type="application/json")

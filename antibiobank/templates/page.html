@@ -7,12 +7,16 @@
 	<link rel="stylesheet" href="static/css/page.css">
 	<script src="static/js/jquery.min.js"></script>
 	<script src="static/uikit/js/uikit.min.js"></script>
-	<script src="static/js/chart.min.js"></script>
+	<script src="static/js/canvasjs.min.js"></script>
 
 </head>
 <body>
 
-	<nav class="uk-navbar">
+	<div class="overlay">
+		<img src="static/img/ajax-loader.gif">
+	</div>
+
+	<nav class="uk-navbar uk-fixed-navigation">
 		<a class="uk-navbar-brand" href="">AntiBiobank</a>
 
 		<ul class="uk-navbar-nav">
@@ -58,6 +62,7 @@
 				<datalist id="services_list">
 				</datalist>
 
+				<img src="static/img/indicator.gif" class="indicator" width="100%" style="visibility:hidden"/> <br/>
 
 				<button class="uk-button  uk-width-1-1" onClick="get_stats()">Rechercher</button>
 
@@ -80,13 +85,26 @@
 
 
 		<div class="main">
+
+			<ul class="uk-subnav uk-subnav-line" id="subnav">
+				<li><a href="">Staphylococcus</a></li>
+				<li><a href="">RESP</a></li>
+				<li><span>Pediatrie</span></li>
+			</ul>
+			
+
 			<div class="uk-grid" id="box_container">
-				<div class="uk-width-custom uk-grid-margin" style="width:300px;visibility:hidden" id="box_template">
+
+				<div class="uk-width-custom uk-grid-margin" style="width:300px;display:none" id="box_template">
 					<div class="uk-panel uk-panel-box" >
-						<h3 class="uk-panel-title">
+						<div id="{CHARTID}" style="height: 300px; width: 100%;">
+							
+
+						</div>
+						<!-- <h3 class="uk-panel-title">
 							{ANTIBIOTIQUE}
-						</h3>
-						<canvas id="{CHART}" width="200" height="200"></canvas>
+						</h3> -->
+						<!-- <canvas id="{CHART}" width="200" height="200"></canvas> -->
 					</div>
 				</div>
 
@@ -114,17 +132,26 @@ function get_stats(){
 	send["service"]  = $("#services_input").val();
 
 
+	$('.overlay').css({"visibility":"visible"});
+
 	$.post("ajax_stats.json",send, function(data,status){
-		alert(status);
 		$("#atb_list").empty();
 		for (var i=0; i<data.length; i++)
 			$("#atb_list").append("<li><a href='#'>"+data[i].name+"</a></li>")
 
 		load_chart(data);
 
-		
+	})
+	.always(function() {
+		$('.overlay').css({"visibility":"hidden"});	
 
-	});
+	})
+
+	.fail(function() {
+		$('.overlay').css({"visibility":"hidden"});	
+
+	})
+	;
 }
 
 // ====================================================================
@@ -133,28 +160,60 @@ function load_chart(data){
 
 	box_template = $("#box_template")[0].outerHTML;
 
-	$("#box_container").empty();
-
-
 
 	for (var i=0; i<data.length; i+=1)
 	{
 		console.log(data[i]);
-		box = box_template.replace("visibility:hidden", "");
-		box = box.replace("{ANTIBIOTIQUE}", data[i].name);
-		box = box.replace("{CHART}", "chart"+i);
-		box = box.replace("box_template", "box"+i);
-		$("#box_container").append(box);
+		box = box_template.replace("display:none", "");
+		box = box.replace("{CHARTID}", "chart-"+i);
+		
+		if ($("#chart-"+i).length == 0)  // If existe deja, on refait pas
+			$("#box_container").append(box);
 
-		var ctx = document.getElementById("chart"+i).getContext("2d");
+		var chart = new CanvasJS.Chart("chart-"+i,
+		{
+			title:{
+				text: data[i].name
+			},
+			legend:{
+				verticalAlign: "top",
+				horizontalAlign: "center"
+			},
+			data: [
+			{
+				type: "doughnut",
+				showInLegend:true,
+				dataPoints: [
+				{  y: data[i].S, indexLabel: "S", color:"#98cb4a", legendText:"Sensible"},
+				{  y: data[i].R ,indexLabel: "R" , color:"#f26075", legendText:"Resistant"},
+				{  y: data[i].I, indexLabel: "I" , color:"#849199", legendText:"Intermediaire"},
 
-		var pieData = []
+				]
+			}
+			]
+		});
 
-		pieData.push({"value":parseInt(data[i].S),color:"#98cb4a"})
-		pieData.push({"value":parseInt(data[i].I), color:"#849199"})
-		pieData.push({"value":parseInt(data[i].R), color:"#f26075"})
+		chart.render();
 
-		var myPie = new Chart(ctx).Doughnut(pieData);
+
+		// box = box_template.replace("visibility:hidden", "");
+		// box = box.replace("{ANTIBIOTIQUE}", data[i].name);
+		// box = box.replace("{CHART}", "chart"+i);
+		// box = box.replace("box_template", "box"+i);
+		// $("#box_container").append(box);
+
+		// var ctx = document.getElementById("chart"+i).getContext("2d");
+
+		// var pieData = []
+
+		// pieData.push({"value":parseInt(data[i].S),color:"#98cb4a"})
+		// pieData.push({"value":parseInt(data[i].I), color:"#849199"})
+		//pieData.push({"value":parseInt(data[i].R), color:"#f26075"})
+
+		// pieData.push({"value":1});
+		// pieData.push({"value":1});
+
+		// var myPie = new Chart(ctx).Doughnut(pieData);
 
 
 
@@ -169,6 +228,11 @@ function load_chart(data){
 
 
 $(document).ready(function(){
+
+
+
+
+
 
 
 	$("#bacteries_list").empty();
