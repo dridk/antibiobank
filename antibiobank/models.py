@@ -3,9 +3,9 @@ from django.db import models
 
 class Bactery(models.Model):
 	generic_name = models.CharField(max_length=255)
-	specfic_name = models.CharField(max_length=255)
+	specific_name = models.CharField(max_length=255)
 	def __str__(self):
-		return self.generic_name+" "+self.specfic_name
+		return self.generic_name+" "+self.specific_name
 
 # ------------------------------------------------------
 
@@ -33,9 +33,9 @@ class Record(models.Model):
 	bactery    = models.ForeignKey(Bactery)
 	service    = models.ForeignKey(Service)
 	specimen   = models.ForeignKey(Specimen)
-	date       = models.DateField()
+	date       = models.DateField(null=True)
  	patient    = models.CharField(max_length=10)
-	birthday   = models.DateField()
+	birthday   = models.DateField(null=True)
 	sensibility= models.ManyToManyField(Antibiotic, through='Resistance')
 
 
