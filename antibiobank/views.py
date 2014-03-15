@@ -12,49 +12,55 @@ def index(request):
 def ajax_bacteries(request):
 	response_data = []	
 	for b in Bactery.objects.all():
-		response_data.append(unicode(b))
+		response_data.append({"id": b.id, "name":unicode(b)})
 	return HttpResponse(json.dumps({"results":response_data}), content_type="application/json")
 
 def ajax_services(request):
 	response_data = []
 	for b in Service.objects.all():
-		response_data.append(unicode(b))
+		response_data.append({"id": b.id, "name":unicode(b)})
 	return HttpResponse(json.dumps({"results":response_data}), content_type="application/json")
 
 def ajax_specimens(request):
 	response_data = []
 	for b in Specimen.objects.all():
-		response_data.append(unicode(b))
-
+		response_data.append({"id": b.id, "name":unicode(b)})
 	return HttpResponse(json.dumps({"results":response_data}), content_type="application/json")
 
 def ajax_stats(request):
-		if request.method == "GET":
-			print "get params : " + str(request.GET)
 
-		if request.method == "POST":
-			print "post params : "+ str(request.POST)
+	print request.POST
 
-		print "type of "
+	bactery_id  = request.POST["bactery_id"]
+	specimen_id = request.POST["bactery_id"]
+	service_id  = request.POST["bactery_id"]
 
-		atb = []
-		resistances = Resistance.objects.filter(record__bactery_id=1)
-		
-		for item in resistances.values_list("antibiotic__name", "antibiotic__id").distinct():
-			s_value = 40
-			r_value = 50
-			i_value = 10
+
+	# service = request.POST["service"]
+	# specimen = request.POST["specimen"]
 
 
 
-			obj = {}
-			obj["name"] = item[0]
-			obj["S"] = int(resistances.filter(value="S", antibiotic__id = item[1]).count())
-			obj["R"] = int(resistances.filter(value="R", antibiotic__id = item[1]).count())
-			obj["I"] = int(resistances.filter(value="I", antibiotic__id = item[1]).count())
-
-			atb.append(obj)
+	atb = []
+	resistances = Resistance.objects.filter(record__bactery_id = bactery_id)
 
 
+	print resistances.count()
 
-		return HttpResponse(json.dumps(atb), content_type="application/json")
+
+	for item in resistances.values_list("antibiotic__name", "antibiotic__id").distinct():
+
+		s_value = 40
+		r_value = 50
+		i_value = 10
+
+		obj = {}
+		obj["name"] = item[0]
+		obj["S"] = int(resistances.filter(value="S", antibiotic__id = item[1]).count())
+		obj["R"] = int(resistances.filter(value="R", antibiotic__id = item[1]).count())
+		obj["I"] = int(resistances.filter(value="I", antibiotic__id = item[1]).count())
+
+		atb.append(obj)
+
+
+	return HttpResponse(json.dumps(atb), content_type="application/json")

@@ -45,10 +45,26 @@
 		<div class="left">
 
 			<form action="#" class="uk-form">
-				<input id="bacteries_input" class="uk-form-large field" type="text" placeholder="Bacterie" 
-				list="bacteries_list">
 
-				<input id="specimens_input" class="uk-form-large field" type="text" placeholder="Prelevement" 
+				<select id="bacteries_input" class="uk-form-large field">
+					<option value="volvo">Volvo</option>
+					<option value="saab">Saab</option>
+					<option value="mercedes">Mercedes</option>
+					<option value="audi">Audi</option>
+
+				</select>
+
+				<select id="specimens_input" class="uk-form-large field">
+
+
+				</select>
+
+				<select id="services_input" class="uk-form-large field">
+
+
+				</select>
+
+				<!-- <input id="specimens_input" class="uk-form-large field" type="text" placeholder="Prelevement" 
 				list="specimens_list">
 
 				<input id="services_input" class="uk-form-large field" type="text" placeholder="Service" 
@@ -63,6 +79,13 @@
 
 				<datalist id="services_list">
 				</datalist>
+
+				<select>
+					<option value="volvo">Volvo</option>
+					<option value="saab">Saab</option>
+					<option value="mercedes">Mercedes</option>
+					<option value="audi">Audi</option>
+				</select> -->
 
 				<img src="static/img/indicator.gif" class="indicator" width="100%" style="visibility:hidden"/> <br/>
 
@@ -129,9 +152,9 @@
 function get_stats(){
 
 	send = {}
-	send["bacterie"] = $("#bacteries_input").val();
-	send["specimen"] = $("#specimens_input").val();
-	send["service"]  = $("#services_input").val();
+	send["bactery_id"] = $("#specimens_input").val();;
+	send["specimen_id"] = $("#specimens_input").val();
+	send["service_id"]  = $("#services_input").val();
 
 
 	$('.overlay').css({"visibility":"visible"});
@@ -237,34 +260,35 @@ $(document).ready(function(){
 
 
 
-	$("#bacteries_list").empty();
-	$("#services_list").empty();
-	$("#specimens_list").empty();
+	$("#bacteries_input").empty();
+	$("#bacteries_input").empty();
+	$("#bacteries_input").empty();
 
 	$.getJSON("http://localhost:8000/ajax_bacteries.json", function(data) {
 		for (var i=0; i<data.results.length; i+=1)
-			$("#bacteries_list").append("<option value='"+data.results[i]+"'>")
+			$("#bacteries_input").append("<option value='"+data.results[i].id+"'>"+data.results[i].name+"</option>")
+
 	});
 
 	$.getJSON("http://localhost:8000/ajax_services.json", function(data) {
 		for (var i=0; i<data.results.length; i+=1)
-			$("#services_list").append("<option value='"+data.results[i]+"'>")
+			$("#services_input").append("<option value='"+data.results[i].id+"'>"+data.results[i].name+"</option>")
 	});
 
 	$.getJSON("http://localhost:8000/ajax_specimens.json", function(data) {
 		for (var i=0; i<data.results.length; i+=1)
-			$("#specimens_list").append("<option value='"+data.results[i]+"'>")
+			$("#specimens_input").append("<option value='"+data.results[i].id+"'>"+data.results[i].name+"</option>")
 	});
 
 
 
-	
 
 
 
 
 
-	
+
+
 
 
 
