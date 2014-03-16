@@ -76,12 +76,17 @@ def inject_datas(filename):
 		
 		# print("\r%.02f%% %s, " % (round(current/total*100,2),recId))	
 
+
+
 		percent = current/total
-		hashes = '#' * int(round(percent * 20))
-		spaces  = " " * (20 - len(hashes))
+
 		current += 1.00
 		if current + 1 >= total:
 			percent = 1
+			
+		hashes = '#' * int(round(percent * 20))
+		spaces  = " " * (20 - len(hashes))
+		
 
 		output = "\r{2:30}:[{0}] {1}%".format(hashes + spaces,round(percent*100,2), bacterie)
 		sys.stdout.write(output)

@@ -64,28 +64,6 @@
 
 				</select>
 
-				<!-- <input id="specimens_input" class="uk-form-large field" type="text" placeholder="Prelevement" 
-				list="specimens_list">
-
-				<input id="services_input" class="uk-form-large field" type="text" placeholder="Service" 
-				list="services_list">
-
-
-				<datalist id="bacteries_list">
-				</datalist>
-				
-				<datalist id="specimens_list">
-				</datalist>
-
-				<datalist id="services_list">
-				</datalist>
-
-				<select>
-					<option value="volvo">Volvo</option>
-					<option value="saab">Saab</option>
-					<option value="mercedes">Mercedes</option>
-					<option value="audi">Audi</option>
-				</select> -->
 
 				<img src="static/img/indicator.gif" class="indicator" width="100%" style="visibility:hidden"/> <br/>
 
@@ -120,18 +98,14 @@
 
 			<div class="uk-grid" id="box_container">
 
-				<div class="uk-width-custom uk-grid-margin" style="width:300px;display:none" id="box_template">
+			<!-- 	<div class="uk-width-custom uk-grid-margin" style="width:300px;display:none" id="box_template">
 					<div class="uk-panel uk-panel-box" >
 						<div id="{CHARTID}" style="height: 300px; width: 100%;">
-							
+					
 
 						</div>
-						<!-- <h3 class="uk-panel-title">
-							{ANTIBIOTIQUE}
-						</h3> -->
-						<!-- <canvas id="{CHART}" width="200" height="200"></canvas> -->
 					</div>
-				</div>
+				</div> -->
 
 
 			</div>
@@ -183,12 +157,23 @@ function get_stats(){
 
 function load_chart(data){
 
-	box_template = $("#box_template")[0].outerHTML;
+	var strVar="";
+	strVar += "<div class=\"uk-width-custom uk-grid-margin\" style=\"width:300px;display:none\" id=\"box_template\">";
+	strVar += "					<div class=\"uk-panel uk-panel-box\" >";
+	strVar += "						<div id=\"{CHARTID}\" style=\"height: 300px; width: 100%;\">";
+	strVar += "						<\/div>";
+	strVar += "					<\/div>";
+
+
+
+	box_template = strVar;
+
+	$("#box_container").empty();
+
 
 
 	for (var i=0; i<data.length; i+=1)
 	{
-		console.log(data[i]);
 		box = box_template.replace("display:none", "");
 		box = box.replace("{CHARTID}", "chart-"+i);
 		
