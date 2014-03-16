@@ -41,6 +41,7 @@
 
 
 	<div class="container">
+	
 
 		<div class="left">
 
@@ -77,8 +78,6 @@
 			<ul class="uk-nav uk-nav-side" id="atb_list">
 				<li><a href="">Amoxicilline</a></li>
 				<li class="uk-active"><a href="">Cefotaxime</a></li>
-
-
 			</ul>
 
 			
@@ -249,18 +248,18 @@ $(document).ready(function(){
 	$("#bacteries_input").empty();
 	$("#bacteries_input").empty();
 
-	$.getJSON("http://localhost:8000/ajax_bacteries.json", function(data) {
+	$.getJSON("ajax_bacteries.json", function(data) {
 		for (var i=0; i<data.results.length; i+=1)
 			$("#bacteries_input").append("<option value='"+data.results[i].id+"'>"+data.results[i].name+"</option>")
 
 	});
 
-	$.getJSON("http://localhost:8000/ajax_services.json", function(data) {
+	$.getJSON("ajax_services.json", function(data) {
 		for (var i=0; i<data.results.length; i+=1)
 			$("#services_input").append("<option value='"+data.results[i].id+"'>"+data.results[i].name+"</option>")
 	});
 
-	$.getJSON("http://localhost:8000/ajax_specimens.json", function(data) {
+	$.getJSON("ajax_specimens.json", function(data) {
 		for (var i=0; i<data.results.length; i+=1)
 			$("#specimens_input").append("<option value='"+data.results[i].id+"'>"+data.results[i].name+"</option>")
 	});

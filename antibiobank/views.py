@@ -6,7 +6,7 @@ import json
 
 
 def index(request):
-	context = {'latest_poll_list': 5}
+	context = {'latest_poll_list': 5, 'server':request.META['HTTP_HOST']} 
 	return render(request, "page.html", context)
 
 def ajax_bacteries(request):
