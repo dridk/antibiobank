@@ -132,8 +132,14 @@ function get_stats(){
 
 	$('.overlay').css({"visibility":"visible"});
 
+	$("#atb_list").empty();
+	$("#box_container").empty();
+
 	$.post("ajax_stats.json",send, function(data,status){
-		$("#atb_list").empty();
+		
+
+
+
 		for (var i=0; i<data.length; i++)
 			$("#atb_list").append("<li><a href='#'>"+data[i].name+"</a></li>")
 
@@ -167,7 +173,6 @@ function load_chart(data){
 
 	box_template = strVar;
 
-	$("#box_container").empty();
 
 
 
