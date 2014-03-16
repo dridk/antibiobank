@@ -4,9 +4,9 @@
 import csv	
 import os
 import sys
+import glob
 from datetime import *
 from antibiobank.models import *
-
 
 #=====================================================
 
@@ -14,7 +14,7 @@ def inject_datas(filename):
 
 	file    = open(filename,'rb')
 	total   = len(file.readlines())
-	current = 0.0
+	current = 0.00
 
 
 	file.seek(0)
@@ -74,12 +74,43 @@ def inject_datas(filename):
 										  value = row[index])
 				
 		
-		print("[%s %%] ave Record %s" % (round(current/total*100,2),recId))		
-		current += 1	
+		# print("\r%.02f%% %s, " % (round(current/total*100,2),recId))	
+
+		percent = current/total
+		hashes = '#' * int(round(percent * 20))
+		spaces  = " " * (20 - len(hashes))
+		current += 1.00
+		if current + 1 >= total:
+			percent = 1
+
+		output = "\r{2:30}:[{0}] {1}%".format(hashes + spaces,round(percent*100,2), bacterie)
+		sys.stdout.write(output)
+		sys.stdout.flush()
+
+	sys.stdout.write("\n")
+
+
+
 
 
 #=====================================================
 	
 		
-inject_datas("datas/Klebsiella_pneumoniae_atb.csv")
+
+print "---------------------------------------------"
+print "Start datas injections at {}".format(datetime.today())
+print "---------------------------------------------"
+start_date = datetime.today()
+
+for file in glob.glob("datas/utf8/*.csv"):
+	x = 3*400
+	inject_datas(file)
+
+end_date  = datetime.today()
+
+diff = end_date - start_date 
+
+print "---------------------------------------------"
+print "End of injection in {}".format(diff)
+
 
