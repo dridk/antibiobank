@@ -5,8 +5,11 @@ import csv
 import os
 import sys
 import glob
+import smtplib
 from datetime import *
 from antibiobank.models import *
+
+
 
 #=====================================================
 
@@ -100,22 +103,25 @@ def inject_datas(filename):
 
 #=====================================================
 	
-		
+def run():		
+	"---------------------------------------------"
+	print "Start datas injections at {}".format(datetime.today())
+	print "---------------------------------------------"
+	start_date = datetime.today()
 
-print "---------------------------------------------"
-print "Start datas injections at {}".format(datetime.today())
-print "---------------------------------------------"
-start_date = datetime.today()
 
-for file in glob.glob("datas/utf8/*.csv"):
-	x = 3*400
-	inject_datas(file)
 
-end_date  = datetime.today()
+	for file in glob.glob("datas/utf8/*.csv"):
+		inject_datas(file)
+		server = smtplib.SMTP("localhost")
+		server.sendmail("antibiobank@labsquare.org","istdasklar@gmail.com", file+" imported")	
 
-diff = end_date - start_date 
+	end_date  = datetime.today()
 
-print "---------------------------------------------"
-print "End of injection in {}".format(diff)
+	diff = end_date - start_date 
 
+	print "---------------------------------------------"
+	print "End of injection in {}".format(diff)
+	server.sendmail("antibiobank@labsquare.org", "istdasklar@gmail.com", "Insertion des datas terminé")
+	server.quit()
 
