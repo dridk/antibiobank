@@ -63,4 +63,5 @@ def ajax_stats(request):
 		atb.append(obj)
 
 
+	
 	return HttpResponse(json.dumps(atb), content_type="application/json")

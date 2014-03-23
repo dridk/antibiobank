@@ -104,7 +104,8 @@ def inject_datas(filename):
 #=====================================================
 	
 def run():		
-	"---------------------------------------------"
+	
+	print "---------------------------------------------"
 	print "Start datas injections at {}".format(datetime.today())
 	print "---------------------------------------------"
 	start_date = datetime.today()
@@ -113,8 +114,8 @@ def run():
 
 	for file in glob.glob("datas/utf8/*.csv"):
 		inject_datas(file)
-		server = smtplib.SMTP("localhost")
-		server.sendmail("antibiobank@labsquare.org","istdasklar@gmail.com", file+" imported")	
+#		server = smtplib.SMTP("localhost")
+#		server.sendmail("antibiobank@labsquare.org","istdasklar@gmail.com", file+" imported")	
 
 	end_date  = datetime.today()
 
@@ -122,6 +123,6 @@ def run():
 
 	print "---------------------------------------------"
 	print "End of injection in {}".format(diff)
-	server.sendmail("antibiobank@labsquare.org", "istdasklar@gmail.com", "Insertion des datas terminé")
-	server.quit()
+#	server.sendmail("antibiobank@labsquare.org", "istdasklar@gmail.com", "Insertion des datas terminé")
+#	server.quit()
 
