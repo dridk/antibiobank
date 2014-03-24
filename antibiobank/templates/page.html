@@ -14,7 +14,7 @@
 
 	
 
-	<div class="overlay">
+	<div id="overlay">
 		<img src="static/img/ajax-loader.gif">
 	</div>
 
@@ -41,7 +41,7 @@
 
 
 	<div class="container">
-	
+
 
 		<div class="left">
 
@@ -68,15 +68,19 @@
 
 				<img src="static/img/indicator.gif" class="indicator" width="100%" style="visibility:hidden"/> <br/>
 
-				<button class="uk-button  uk-width-1-1" onClick="get_stats()">Rechercher</button>
+
+				<button id="getButton" class="uk-button  uk-width-1-1" 
+				onclick="return false">Rechercher</button>
 
 
 			</form>
 
-			<hr>
+			
 
 			<ul class="uk-nav uk-nav-side" id="atb_list">
-				<li><a href="">Amoxicilline</a></li>
+				<li class="uk-nav-divider"></li>
+				<li class="uk-nav-header">Antibiotique</li>
+				<li><a href=""><i class="uk-icon-star"></i>Amoxicilline</a></li>
 				<li class="uk-active"><a href="">Cefotaxime</a></li>
 			</ul>
 
@@ -125,15 +129,19 @@
 function get_stats(){
 
 	send = {}
-	send["bactery_id"] = $("#bacteries_input").val();;
+	send["bactery_id"]  = $("#bacteries_input").val();;
 	send["specimen_id"] = $("#specimens_input").val();
 	send["service_id"]  = $("#services_input").val();
 
 
-	$('.overlay').css({"visibility":"visible"});
+
+	$('#overlay').show();
+
 
 	$("#atb_list").empty();
 	$("#box_container").empty();
+
+
 
 	$.post("ajax_stats.json",send, function(data,status){
 		
@@ -156,6 +164,8 @@ function get_stats(){
 
 	})
 	;
+
+
 }
 
 // ====================================================================
@@ -210,26 +220,6 @@ function load_chart(data){
 		chart.render();
 
 
-		// box = box_template.replace("visibility:hidden", "");
-		// box = box.replace("{ANTIBIOTIQUE}", data[i].name);
-		// box = box.replace("{CHART}", "chart"+i);
-		// box = box.replace("box_template", "box"+i);
-		// $("#box_container").append(box);
-
-		// var ctx = document.getElementById("chart"+i).getContext("2d");
-
-		// var pieData = []
-
-		// pieData.push({"value":parseInt(data[i].S),color:"#98cb4a"})
-		// pieData.push({"value":parseInt(data[i].I), color:"#849199"})
-		//pieData.push({"value":parseInt(data[i].R), color:"#f26075"})
-
-		// pieData.push({"value":1});
-		// pieData.push({"value":1});
-
-		// var myPie = new Chart(ctx).Doughnut(pieData);
-
-
 
 	}
 
@@ -244,8 +234,14 @@ function load_chart(data){
 $(document).ready(function(){
 
 
+	
 
+	$( "#getButton" ).click(function() {
+		get_stats()
+	});
 
+	console.debug("salut");
+	$('#overlay').hide();
 
 
 

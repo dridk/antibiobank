@@ -3,14 +3,39 @@
 
 import pylab
 from antibiobank.models import *
+from django.db.models import F
+from django.db.models import Q
 
 
-def create_plot(bactery_id):
+def create_plot(bactery_id, full_sensibility=None):
 	atb = []
-	resistances = Resistance.objects.filter(record__bactery_id = bactery_id)
+
+	list = ["CEFALOTINE","CEFEPIME"]
+	
+
+	q = Q(**{"resistance__antibiotic__name":"CEFALOTINE"})
+	q = q and Q(**{"resistance__antibiotic__name":"CEFEPIME"})
 
 
-	for item in resistances.values_list("antibiotic__name", "antibiotic__id").distinct():
+
+
+	records = Record.objects.filter(bactery_id = bactery_id)
+
+	records = records.filter(q, resistance__value="R")
+
+
+
+	print records.count()
+
+	# resistances = Resistance.objects.filter(record__bactery_id = bactery_id)
+	# resistances = resistances.filter(antibiotic__name="CEFEPIME", value="S")
+	bacterie = Bactery.objects.filter(pk=bactery_id)
+
+	resistances = Resistance.objects.filter(record__in=records)
+	items = resistances.values_list("antibiotic__name", "antibiotic__id")
+
+
+	for item in items.distinct():
 		s_value = 40
 		r_value = 50
 		i_value = 10
@@ -22,19 +47,22 @@ def create_plot(bactery_id):
 		obj["I"] = int(resistances.filter(value="I", antibiotic__id = item[1]).count())
 
 		atb.append(obj)
-	print atb
-	return atb
+
+	results = {"name":str(bacterie), "data":atb}
+
+	return results
 
 
 def run():
-	data = create_plot(1)
+	results = create_plot(2)
 	col  = 4
-	row  = (len(data)/col) + 1
+	row  = (len(results["data"])/col) + 1
 
-
+	fig = pylab.gcf()
+	fig.canvas.set_window_title(results["name"])
 	colors = ["#77DD77","#FFB347","#FF6961"]
 	i=1
-	for atb in data:
+	for atb in results["data"]:
 		sizes = [atb["S"],atb["I"],atb["R"]]
 		pylab.subplot(row,col,i)
 

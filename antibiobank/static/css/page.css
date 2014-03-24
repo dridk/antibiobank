@@ -39,6 +39,7 @@
 
 select {
 	width: 100%;
+	margin-bottom: 5px;
 }
 
 .main {
@@ -79,8 +80,8 @@ select {
 }
 
 
-.overlay{
-	background-color: black;
+#overlay{
+/*	background-color: black;
 	position: fixed;
 	top:0;
 	left:0;
@@ -88,10 +89,10 @@ select {
 	bottom: 0;
 	z-index: 1;
 	opacity: 0.5;
-	visibility: hidden;
+	visibility: hidden;*/
 }
 
-.overlay img{
+#overlay img{
 	position: absolute;
 	margin: auto;
 	left:50%;
