@@ -29,17 +29,22 @@
 	bottom: 0px;
 	top:45px;
 	border-right: 1px solid #EEEEEE;
-	padding: 5px;
-	padding-right: 10px;
+	
 	overflow-y: auto;
 	overflow-x: hidden;
 	
 
 }
 
-select {
+
+#searchform {
+	padding: 3px;
+}
+
+#searchform * {
 	width: 100%;
 	margin-bottom: 5px;
+
 }
 
 .main {
@@ -100,4 +105,15 @@ select {
 
 }
 
+#atb_list {
+	position:relative;
+}
 
+
+
+li span.uk-badge {
+	float:right;
+	position:relative;
+	top:6px;
+	right: 6px;
+}

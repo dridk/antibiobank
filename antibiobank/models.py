@@ -36,7 +36,7 @@ class Record(models.Model):
 	date       = models.DateField(null=True)
  	patient    = models.CharField(max_length=10)
 	birthday   = models.DateField(null=True)
-	sensibility= models.ManyToManyField(Antibiotic, through='Resistance')
+
 
 
 # ------------------------------------------------------
@@ -45,3 +45,6 @@ class Resistance(models.Model):
 	record     = models.ForeignKey(Record)
 	antibiotic = models.ForeignKey(Antibiotic)
 	value      = models.CharField(max_length=3) 
+
+	class Meta:
+		unique_together = ("record", "antibiotic")

@@ -44,47 +44,70 @@
 
 
 		<div class="left">
+			<div id="searchform">
+				<form  action="#" class="uk-form">
 
-			<form action="#" class="uk-form">
+					<select id="bacteries_input" class="uk-form-large field">
+						<option value="volvo">Volvo</option>
+						<option value="saab">Saab</option>
+						<option value="mercedes">Mercedes</option>
+						<option value="audi">Audi</option>
 
-				<select id="bacteries_input" class="uk-form-large field">
-					<option value="volvo">Volvo</option>
-					<option value="saab">Saab</option>
-					<option value="mercedes">Mercedes</option>
-					<option value="audi">Audi</option>
+					</select>
 
-				</select>
-
-				<select id="specimens_input" class="uk-form-large field">
-
-
-				</select>
-
-				<select id="services_input" class="uk-form-large field">
+					<select id="specimens_input" class="uk-form-large field">
 
 
-				</select>
+					</select>
+
+					<select id="services_input" class="uk-form-large field">
 
 
-				<img src="static/img/indicator.gif" class="indicator" width="100%" style="visibility:hidden"/> <br/>
+					</select>
+
+					<input type="text" class="uk-form-success uk-form-large" placeholder="Sensibility filter">
+
+					<select  class="uk-form-large">
+						<option selected="selected">Sensible</option>
+						<option>Intermediaire</option>
+						<option>Resistant</option>
+
+					</select>
+
+					<button id="getButton" class="uk-button  uk-width-1-1" 
+					onclick="return false">Rechercher</button>
 
 
-				<button id="getButton" class="uk-button  uk-width-1-1" 
-				onclick="return false">Rechercher</button>
+				</form>
+			</div>
 
 
-			</form>
 
-			
-
-			<ul class="uk-nav uk-nav-side" id="atb_list">
+			<ul class="uk-nav uk-nav-side uk-subnav-pill" id="atb_list">
 				<li class="uk-nav-divider"></li>
 				<li class="uk-nav-header">Antibiotique</li>
-				<li><a href=""><i class="uk-icon-star"></i>Amoxicilline</a></li>
-				<li class="uk-active"><a href="">Cefotaxime</a></li>
+				<li id="amox"><a>Amoxicilline</a></li>
+
+				<li data-uk-dropdown="{mode:'click'}" >
+
+					<a>test</a>
+
+					<!-- This is the dropdown -->
+					<div class="uk-dropdown uk-dropdown-small">
+						<ul class="uk-nav uk-nav-dropdown">
+							<li><a href="">abbb</a></li>
+							<li><a href="">abbb</a></li>
+							<li><a href="">abbb</a></li>
+
+						</ul>
+					</div>
+				</li>
+
+
+				<li id="cefo"><a>Cefotaxime</a></li>
 			</ul>
 
-			
+
 
 
 		</div>
@@ -97,7 +120,7 @@
 				<li><a href="">RESP</a></li>
 				<li><span>Pediatrie</span></li>
 			</ul>
-			
+
 
 			<div class="uk-grid" id="box_container">
 
@@ -239,6 +262,17 @@ $(document).ready(function(){
 	$( "#getButton" ).click(function() {
 		get_stats()
 	});
+
+
+
+
+	$('#atb_list').on('click','li',function() {
+
+		element =$(this);
+		element.toggleClass("uk-active");
+	});
+	
+
 
 	console.debug("salut");
 	$('#overlay').hide();
