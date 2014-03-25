@@ -19,8 +19,6 @@ def create_plot(bactery_id, full_sensibility=None):
 
 	list = ["CEFALOTINE","CEFEPIME"]
 	
-
-
 	records    = Record.objects.filter(bactery_id = bactery_id)
 	atbTesting = records.values("resistance__antibiotic__id","resistance__antibiotic__name").distinct()
 

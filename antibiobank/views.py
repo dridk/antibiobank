@@ -31,37 +31,48 @@ def ajax_stats(request):
 
 	print request.POST
 
-	bactery_id  = request.POST["bactery_id"]
-	specimen_id = request.POST["bactery_id"]
-	service_id  = request.POST["bactery_id"]
-
-
-	# service = request.POST["service"]
-	# specimen = request.POST["specimen"]
-
+	bactery_id  = request.POST.get("bactery_id",1)
+	specimen_id = request.POST.get("specimen_id",1)
+	service_id  = request.POST.get("service_id",1)
+	filter_mode = request.POST.get("filter_mode", "S")
+	filter_ids  = request.POST.getlist("filter_ids[]", None)
 
 
 	atb = []
-	resistances = Resistance.objects.filter(record__bactery_id = bactery_id)
+	
+	records    = Record.objects.filter(bactery_id = bactery_id)
+	atbTesting = records.values("resistance__antibiotic__id","resistance__antibiotic__name").distinct()
+
+	if filter_ids != None:
+		for id in filter_ids:
+			records = records.filter(resistance__antibiotic_id=id, resistance__value=filter_mode)
+
+			
 
 
-	print resistances.count()
+	# records    = records.filter(resistance__antibiotic_id=2, resistance__value="S")
+	# records    = records.filter(resistance__antibiotic_id=1, resistance__value="R")
 
+	print "total {}".format(records.count())
 
-	for item in resistances.values_list("antibiotic__name", "antibiotic__id").distinct():
+	resistances = Resistance.objects.filter(record__in=records)
 
-		s_value = 40
-		r_value = 50
-		i_value = 10
-
+	for item in atbTesting:
+		
 		obj = {}
-		obj["name"] = item[0]
-		obj["S"] = int(resistances.filter(value="S", antibiotic__id = item[1]).count())
-		obj["R"] = int(resistances.filter(value="R", antibiotic__id = item[1]).count())
-		obj["I"] = int(resistances.filter(value="I", antibiotic__id = item[1]).count())
+		print item
+		obj["name"] = item["resistance__antibiotic__name"]
+		obj["id"]   = item["resistance__antibiotic__id"]
+		obj["S"] = int(resistances.filter(value="S", antibiotic__id = item["resistance__antibiotic__id"]).count())
+		obj["R"] = int(resistances.filter(value="R", antibiotic__id = item["resistance__antibiotic__id"]).count())
+		obj["I"] = int(resistances.filter(value="I", antibiotic__id = item["resistance__antibiotic__id"]).count())
 
 		atb.append(obj)
 
+	results = {"name":"Sacha", "data":atb}
+	print results
+
+
 
 	
-	return HttpResponse(json.dumps(atb), content_type="application/json")
+	return HttpResponse(json.dumps(results), content_type="application/json")

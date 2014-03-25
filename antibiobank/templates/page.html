@@ -56,21 +56,17 @@
 					</select>
 
 					<select id="specimens_input" class="uk-form-large field">
-
-
 					</select>
 
 					<select id="services_input" class="uk-form-large field">
-
-
 					</select>
 
-					<input type="text" class="uk-form-success uk-form-large" placeholder="Sensibility filter">
+					<input id="filter" type="text" class="uk-form-success uk-form-large" placeholder="Sensibility filter" readonly>
 
-					<select  class="uk-form-large">
-						<option selected="selected">Sensible</option>
-						<option>Intermediaire</option>
-						<option>Resistant</option>
+					<select id="filter_mode" class="uk-form-large">
+						<option selected="selected" value="S">Sensible</option>
+						<option value="I">Intermediaire</option>
+						<option value="R">Resistant</option>
 
 					</select>
 
@@ -87,23 +83,6 @@
 				<li class="uk-nav-divider"></li>
 				<li class="uk-nav-header">Antibiotique</li>
 				<li id="amox"><a>Amoxicilline</a></li>
-
-				<li data-uk-dropdown="{mode:'click'}" >
-
-					<a>test</a>
-
-					<!-- This is the dropdown -->
-					<div class="uk-dropdown uk-dropdown-small">
-						<ul class="uk-nav uk-nav-dropdown">
-							<li><a href="">abbb</a></li>
-							<li><a href="">abbb</a></li>
-							<li><a href="">abbb</a></li>
-
-						</ul>
-					</div>
-				</li>
-
-
 				<li id="cefo"><a>Cefotaxime</a></li>
 			</ul>
 
@@ -155,26 +134,30 @@ function get_stats(){
 	send["bactery_id"]  = $("#bacteries_input").val();;
 	send["specimen_id"] = $("#specimens_input").val();
 	send["service_id"]  = $("#services_input").val();
+	send["filter_mode"] = $("#filter_mode").val();
+
+	filter_ids = []
+
+	$("#atb_list li.uk-active").each(function(){
+
+		filter_ids.push($(this).attr("value"))
+	})
+
+	send["filter_ids"] = filter_ids
+
+	console.debug(send)
 
 
 
 	$('#overlay').show();
-
-
 	$("#atb_list").empty();
 	$("#box_container").empty();
 
-
-
-	$.post("ajax_stats.json",send, function(data,status){
+	$.post("ajax_stats.json",send, function(results,status){
 		
 
-
-
-		for (var i=0; i<data.length; i++)
-			$("#atb_list").append("<li><a href='#'>"+data[i].name+"</a></li>")
-
-		load_chart(data);
+		load_atb(results)
+		load_chart(results);
 
 	})
 	.always(function() {
@@ -190,10 +173,16 @@ function get_stats(){
 
 
 }
+// ====================================================================
+function load_atb(results){
 
+	for (var i=0; i<results.data.length; i++)
+		$("#atb_list").append("<li value="+results.data[i].id+"><a href='#'>"+results.data[i].name+"</a></li>")
+
+}
 // ====================================================================
 
-function load_chart(data){
+function load_chart(results){
 
 	var strVar="";
 	strVar += "<div class=\"uk-width-custom uk-grid-margin\" style=\"width:300px;display:none\" id=\"box_template\">";
@@ -202,14 +191,10 @@ function load_chart(data){
 	strVar += "						<\/div>";
 	strVar += "					<\/div>";
 
-
-
 	box_template = strVar;
+	console.debug(results)
 
-
-
-
-	for (var i=0; i<data.length; i+=1)
+	for (var i=0; i<results.data.length; i+=1)
 	{
 		box = box_template.replace("display:none", "");
 		box = box.replace("{CHARTID}", "chart-"+i);
@@ -220,7 +205,7 @@ function load_chart(data){
 		var chart = new CanvasJS.Chart("chart-"+i,
 		{
 			title:{
-				text: data[i].name
+				text: results.data[i].name
 			},
 			legend:{
 				verticalAlign: "top",
@@ -231,9 +216,9 @@ function load_chart(data){
 				type: "doughnut",
 				showInLegend:true,
 				dataPoints: [
-				{  y: data[i].S, indexLabel: "S", color:"#98cb4a", legendText:"Sensible"},
-				{  y: data[i].R ,indexLabel: "R" , color:"#f26075", legendText:"Resistant"},
-				{  y: data[i].I, indexLabel: "I" , color:"#849199", legendText:"Intermediaire"},
+				{  y: results.data[i].S, indexLabel: "S", color:"#98cb4a", legendText:"Sensible"},
+				{  y: results.data[i].R ,indexLabel: "R" , color:"#f26075", legendText:"Resistant"},
+				{  y: results.data[i].I, indexLabel: "I" , color:"#849199", legendText:"Intermediaire"},
 
 				]
 			}
@@ -242,16 +227,11 @@ function load_chart(data){
 
 		chart.render();
 
-
-
 	}
-
-
-
 
 }
 
-
+// ====================================================================
 
 
 $(document).ready(function(){
@@ -264,12 +244,20 @@ $(document).ready(function(){
 	});
 
 
-
+		$("#filter").empty();
 
 	$('#atb_list').on('click','li',function() {
 
 		element =$(this);
 		element.toggleClass("uk-active");
+		text =[]
+		$("#atb_list li.uk-active").each(function(){
+			text.push($(this).text())
+		});
+
+
+		$("#filter").val(text.join(","))
+
 	});
 	
 
