@@ -22,6 +22,10 @@
 
 }
 
+.container div {
+	margin-top:0px;
+}
+
 .left {
 	background-color: #FBFBFB;
 	position: fixed;
@@ -29,10 +33,9 @@
 	bottom: 0px;
 	top:45px;
 	border-right: 1px solid #EEEEEE;
-	
 	overflow-y: auto;
 	overflow-x: hidden;
-	
+
 
 }
 
@@ -50,13 +53,13 @@
 .main {
 	margin-left: 300px;
 	position: absolute;
-	right: 0px;
-	left:0px;
-	padding-left: 30px;
-	padding-right: 30px;
-
+	padding-left: 20px;
+	padding-top: 20px;
 
 }
+
+
+
 
 .uk-search fieldset {
 	text-align: center;
@@ -67,15 +70,15 @@
 	background-color: green;
 
 }
-
-#subnav{
-	margin-top:30px;
-	margin-left:30px;
-	margin-bottom: 0px;
+.inline{
+	display: inline;
 
 }
+
 #box_container{
-	margin:auto;
+
+margin-top: 0px;
+padding-top: 0px;
 
 }
 

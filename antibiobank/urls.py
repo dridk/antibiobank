@@ -15,6 +15,7 @@ urlpatterns = patterns('',
     url(r'^ajax_specimens.json$', views.ajax_specimens, name="ajax_specimens"),
     url(r'^ajax_services.json$', views.ajax_services, name="ajax_services"),
     url(r'^ajax_stats.json$', views.ajax_stats, name="ajax_stats"),
+    url(r'^ajax_image.json$', views.ajax_image, name="ajax_image")
 
 
 
