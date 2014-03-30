@@ -5,12 +5,14 @@ def get_antibio_datas(bactery_id, filter_mode=None, filter_ids=None):
 	
 	atb = []
 	records    = Record.objects.filter(bactery_id = bactery_id)
-	atbTesting = records.values("resistance__antibiotic__id","resistance__antibiotic__name").distinct()
 
 	if filter_ids != None:
 		for id in filter_ids:
 			records = records.filter(resistance__antibiotic_id=id, resistance__value=filter_mode)
 
+
+
+	atbTesting = records.values("resistance__antibiotic__id","resistance__antibiotic__name").distinct()
 	resistances = Resistance.objects.filter(record__in=records)
 	for item in atbTesting:
 
