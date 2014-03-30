@@ -77,17 +77,25 @@
 
 #box_container{
 
-margin-top: 0px;
-padding-top: 0px;
+	margin-top: 0px;
+	padding-top: 0px;
 
 }
 
 .typeahead{
 	color:red;
-	background-color: red;
+	
 }
 
+.atb_name{
+	width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	margin: auto;
+	text-align: center;
 
+}
 #overlay{
 /*	background-color: black;
 	position: fixed;

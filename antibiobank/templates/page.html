@@ -8,8 +8,12 @@
 	<script src="static/js/jquery.min.js"></script>
 	<script src="static/uikit/js/uikit.min.js"></script>
 	<script src="static/js/canvasjs.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+	<script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
 	<script src="static/js/antibiobank.js"></script>
 
+
+	
 
 </head>
 <body>
@@ -57,7 +61,7 @@
 
 					</select>
 
-					<button id="getButton" class="uk-button  uk-width-1-1" 
+					<button id="getButton" class="uk-button uk-button-large" 
 					onclick="return false">Rechercher</button>
 
 
@@ -82,9 +86,9 @@
 		<div class="main">
 
 			<h2  id="bactery_name" class="uk-text-large inline">SALUT</h2>
-				<h3 id="total" class="uk-text-success inline"> 43 </h3>
+			<h3 id="total" class="uk-text-success inline"> 43 </h3>
 
-				<ul class="uk-subnav uk-subnav-line" id="subnav">
+			<ul class="uk-subnav uk-subnav-line" id="subnav">
 				<!-- <li id="bactery_name"><span>dd</span></li>
 				<li id="total_record"><span>dd</span></li> -->
 			</ul>
@@ -94,14 +98,17 @@
 
 				<!--HERE GENERATED CHARTS  -->
 
+				<div id="myfirstchart" style="height: 250px;"></div>
+
+
+			</div>
+
+
+
 		</div>
 
 
-		
 	</div>
-
-
-</div>
 
 </body>
 

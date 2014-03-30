@@ -56,6 +56,7 @@ function load_chart(results){
 	var strVar="";
 	strVar += "<div class=\"uk-width-custom uk-grid-margin\" style=\"width:300px;display:none\" id=\"box_template\">";
 	strVar += "					<div class=\"uk-panel uk-panel-box\" >";
+	strVar += "<h4 class='atb_name'> {CHARTNAME}</h4>	";
 	strVar += "						<div id=\"{CHARTID}\" style=\"height: 300px; width: 100%;\">";
 	strVar += "						<\/div>";
 	strVar += "					<\/div>";
@@ -67,35 +68,52 @@ function load_chart(results){
 	{
 		box = box_template.replace("display:none", "");
 		box = box.replace("{CHARTID}", "chart-"+i);
-		
+		box = box.replace("{CHARTNAME}", results.data[i].name );
+
 		if ($("#chart-"+i).length == 0)  // If existe deja, on refait pas
 			$("#box_container").append(box);
 
-		var chart = new CanvasJS.Chart("chart-"+i,
-		{
-			title:{
-				text: results.data[i].name + " (" + results.data[i].count +")",
-				fontSize: 14
-			},
-			legend:{
-				verticalAlign: "top",
-				horizontalAlign: "center"
-			},
-			data: [
-			{
-				type: "doughnut",
-				showInLegend:true,
-				dataPoints: [
-				{  y: results.data[i].S, indexLabel: "S", color:"#98cb4a", legendText:"Sensible"},
-				{  y: results.data[i].R ,indexLabel: "R" , color:"#f26075", legendText:"Resistant"},
-				{  y: results.data[i].I, indexLabel: "I" , color:"#849199", legendText:"Intermediaire"},
 
-				]
-			}
+
+		Morris.Donut({
+			element: "chart-"+i,
+			colors:["#98cb4a","#f26075","#849199" ],
+			data: [
+			{label: "S", value: results.data[i].S},
+			{label: "R", value: results.data[i].R},
+			{label: "I", value: results.data[i].I}
 			]
 		});
 
-		chart.render();
+
+
+
+
+		// var chart = new CanvasJS.Chart("chart-"+i,
+		// {
+		// 	title:{
+		// 		text: results.data[i].name + " (" + results.data[i].count +")",
+		// 		fontSize: 14
+		// 	},
+		// 	legend:{
+		// 		verticalAlign: "top",
+		// 		horizontalAlign: "center"
+		// 	},
+		// 	data: [
+		// 	{
+		// 		type: "doughnut",
+		// 		showInLegend:true,
+		// 		dataPoints: [
+		// 		{  y: results.data[i].S, indexLabel: "S", color:"#98cb4a", legendText:"Sensible"},
+		// 		{  y: results.data[i].R ,indexLabel: "R" , color:"#f26075", legendText:"Resistant"},
+		// 		{  y: results.data[i].I, indexLabel: "I" , color:"#849199", legendText:"Intermediaire"},
+
+		// 		]
+		// 	}
+		// 	]
+		// });
+
+		// chart.render();
 
 	}
 
@@ -122,6 +140,18 @@ function load_option(destination, url)
 // =============================================================
 
 $(document).ready(function(){
+
+
+
+// Morris.Donut({
+//   element: 'myfirstchart',
+//   data: [
+//     {label: "Download Sales", value: 12},
+//     {label: "In-Store Sales", value: 30},
+//     {label: "Mail-Order Sales", value: 20}
+//   ]
+// });
+
 
 
 // Lance la recherche 
