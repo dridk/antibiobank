@@ -7,7 +7,7 @@ from antibiobank.models import *
 from antibiobank.utils import *
 import json
 import Image
-import pylab
+import pygal
 
 
 def index(request):
@@ -51,28 +51,25 @@ def ajax_image(request):
 	
 
 
-	results = get_antibio_datas(1,"S")
+	# results = get_antibio_datas(1,"S")
+	# for atb in results["data"]:
+	# 	sizes = [atb["S"],atb["I"],atb["R"]]
 
-	col  = 4
-	row  = (len(results["data"])/col) + 1
 
-	fig = pylab.gcf()
-	fig.canvas.set_window_title(results["name"])
-	colors = ["#77DD77","#FFB347","#FF6961"]
-	i=1
-	for atb in results["data"]:
-		sizes = [atb["S"],atb["I"],atb["R"]]
-		pylab.subplot(row,col,i)
-		pylab.title(atb["name"], fontsize=10)
-		pylab.pie(sizes, colors=colors)
-		pylab.axis('equal')
-		i+=1
 
-	pylab.subplots_adjust(hspace = .5)
-	pylab.axis('equal')
 
-	canvas = FigureCanvasAgg(fig)   
-	response = HttpResponse(mimetype="image/png")
-	canvas.print_png(response)
+	# 	i+=1
+
+	pie_chart = pygal.Pie()
+	pie_chart.title = 'Browser usage in February 2012 (in %)'
+	pie_chart.add('IE', 19.5)
+	pie_chart.add('Firefox', 36.6)
+	pie_chart.add('Chrome', 36.3)
+	pie_chart.add('Safari', 4.5)
+	pie_chart.add('Opera', 2.3)
+
+
+	response = HttpResponse(pie_chart.render(),mimetype="image/svg+xml")
+	
 
 	return response
