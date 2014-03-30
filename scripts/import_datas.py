@@ -72,7 +72,8 @@ def inject_datas(filename):
 			index = headers.index(name)
 			if bool(row[index])  and row[index] not in "NL":
 				atb_item = Antibiotic.objects.get_or_create(name = name)
-				Resistance.objects.create(record = record[0], 
+				if row[index] in ("S","I","R"):
+					Resistance.objects.create(record = record[0], 
 										  antibiotic = atb_item[0],
 										  value = row[index])
 				
