@@ -44,7 +44,7 @@ function get_stats(){
 function load_atb(results){
 
 	for (var i=0; i<results.data.length; i++)
-		$("#atb_list").append("<li value="+results.data[i].id+"><a href='#'>"+results.data[i].name+"</a></li>")
+		$("#atb_list").append("<li value="+results.data[i].id+" onclick=\"return false\"><a href='#'>"+results.data[i].name+"</a></li>")
 
 }
 // =============================================================
