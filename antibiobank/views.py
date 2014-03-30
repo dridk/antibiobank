@@ -16,7 +16,7 @@ def index(request):
 
 def ajax_bacteries(request):
 	response_data = []	
-	for b in Bactery.objects.all():
+	for b in Bactery.objects.all().order_by("generic_name"):
 		response_data.append({"id": b.id, "name":unicode(b)})
 	return HttpResponse(json.dumps({"results":response_data}), content_type="application/json")
 
